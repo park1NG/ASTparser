@@ -23,7 +23,27 @@ void print_fun_name(json_value ext)
 void fun2(json_value ext) { }
 void fun3(json_value ext) { }
 void fun4(json_value ext) { }
-void fun5(json_value ext) { }
+void fun5(json_value ext)
+{
+    json_value ext_in = json_get_from_array((json_array *)ext.value, 0);
+
+	for (int i = 0; i < json_len(ext_in); i++) {
+		json_value json1 = json_get(ext_in, i);
+
+		if (json1.type == JSON_OBJECT) { 
+			char* nodetype = json_get_string(json1, "_nodetype");
+			if (strcmp(nodetype, "Decl") == 0) {
+				json_value params_json = json_get(json_get(json_get(json1, "type"), "args"), "params");
+				for (int j = 0; j < json_len(params_json); j++) {
+					json_value param = json_get(params_json, j);
+					char *type = json_get_string(json_get(json_get(json_get(json_get(param, "type"), "type"), "names"), 0));
+					printf("name: %s, type: %s\n", json_get_string(param, "name"), type);
+				}
+			}
+			free(nodetype);
+		}
+	}
+}
 
 int main() {
     FILE *file = fopen("red_black_terr.c.json", "r");
