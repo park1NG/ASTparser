@@ -25,7 +25,7 @@ void fun3(json_value ext) { }
 void fun4(json_value ext) { }
 
 // 박윤 010-9824-4538
-void fun5(json_value ext)
+void print_fun_param_info(json_value ext)
 {
     json_value ext_in = json_get_from_array((json_array *)ext.value, 0);
 
