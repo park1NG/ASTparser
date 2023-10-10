@@ -22,8 +22,23 @@ void print_fun_name(json_value ext)
 
 void fun2(json_value ext) { }
 void fun3(json_value ext) { }
-void fun4(json_value ext) { }
 
+// 박솔빈_1442
+int countFunctions(json_value ext) {
+    int functionCount = 0;
+
+    for(int i = 0; i < json_len(ext); i++)
+    {
+        json_value obj = json_get_from_array((json_array *)ext.value, i);
+
+        if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0){
+            functionCount++;
+        }
+    }
+    printf("찾은 함수 개수: %d\n", functionCount);
+
+    return functionCount;
+}
 // 박윤_4538
 void print_fun_param_info(json_value ext)
 {
@@ -69,7 +84,7 @@ int main() {
 
     // 함수 이름 출력
     print_fun_name(ext);
-
+    countFunctions(ext);
     json_free(json);
 
     return 0;
