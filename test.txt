@@ -1,0 +1,135 @@
+Func name is : newNode
+Return Type: 
+Func name is : isLeaf
+Func name is : leftRotate
+Return Type: 
+Func name is : rightRotate
+Return Type: 
+Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+Func name is : newNode
+Return Type: 
+["Node"]Func name is : isLeaf
+Func name is : leftRotate
+Return Type: 
+["Node"]Func name is : rightRotate
+Return Type: 
+["Node"]Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+Func name is : newNode
+Return Type: 
+["Node"]Func name is : isLeaf
+Func name is : leftRotate
+Return Type: 
+["Node"]Func name is : rightRotate
+Return Type: 
+["Node"]Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+Func name is : newNode
+Return Type: 
+["Node"]Func name is : isLeaf
+Func name is : leftRotate
+Return Type: 
+["Node"]Func name is : rightRotate
+Return Type: 
+["Node"]Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+Func name is : newNode
+Return Type: 
+["Node"]
+Func name is : isLeaf
+Func name is : leftRotate
+Return Type: 
+["Node"]
+Func name is : rightRotate
+Return Type: 
+["Node"]
+Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+Func name is : newNode
+undefined
+Return Type: 
+["Node"]
+Func name is : isLeaf
+["int"]
+Func name is : leftRotate
+undefined
+Return Type: 
+["Node"]
+Func name is : rightRotate
+undefined
+Return Type: 
+["Node"]
+Func name is : checkNode
+["void"]
+Func name is : insertNode
+["void"]
+Func name is : checkForCase2
+["void"]
+Func name is : deleteNode
+["void"]
+Func name is : printInorder
+["void"]
+Func name is : checkBlack
+["void"]
+Func name is : main
+["int"]
+undefined
+Return Type: 
+["Node"]
+["int"]
+undefined
+Return Type: 
+["Node"]
+undefined
+Return Type: 
+["Node"]
+["void"]
+["void"]
+["void"]
+["void"]
+["void"]
+["void"]
+["int"]
+undefined
+Return Type: 
+["Node"]
+["int"]
+undefined
+Return Type: 
+["Node"]
+undefined
+Return Type: 
+["Node"]
+["void"]
+["void"]
+["void"]
+["void"]
+["void"]
+["void"]
+["int"]

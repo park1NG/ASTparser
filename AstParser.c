@@ -20,7 +20,36 @@ void print_fun_name(json_value ext)
     }
 }
 
-void fun2(json_value ext) { }
+// 박현재_3918
+void print_fun_returnType(json_value ext)
+{
+    for(int i = 0; i < json_len(ext); i++)
+    {
+        json_value obj = json_get_from_array((json_array *)ext.value, i);
+        
+        if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)
+        {
+            json_value decl = json_get(obj, "decl");
+            json_value name = json_get(decl, "name");
+            json_value first_type = json_get(decl, "type");
+            json_value second_type = json_get(first_type, "type");
+            json_value third_type = json_get(second_type, "type");
+            json_value test_type = json_get(third_type, "names");
+            json_print(test_type);
+            printf("\n");
+            if (json_len(test_type) == 0)
+            {
+                json_value final_type = json_get(third_type, "type");
+                json_value if_type = json_get(final_type, "names");
+    			printf("Return Type: \n" );
+                json_print(if_type);
+                printf("\n");
+            }
+			}
+        }
+}
+
+
 void fun3(json_value ext) { }
 
 // 박솔빈_1442
@@ -63,7 +92,7 @@ void print_fun_param_info(json_value ext)
 }
 
 int main() {
-    FILE *file = fopen("red_black_terr.c.json", "r");
+    FILE *file = fopen("red_black_tree.c.json", "r");
 
     fseek(file, 0, SEEK_END);
     long file_size = ftell(file);
@@ -85,6 +114,11 @@ int main() {
     // 함수 이름 출력
     print_fun_name(ext);
     countFunctions(ext);
+
+    // 함수 리턴타입 출력
+    print_fun_returnType(ext);
+    // print_fun_param_info(ext);
+    print_fun_returnType(ext);
     json_free(json);
 
     return 0;
