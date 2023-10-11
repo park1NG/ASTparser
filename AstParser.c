@@ -50,7 +50,31 @@ void print_fun_returnType(json_value ext)
 }
 
 
-void fun3(json_value ext) { }
+//박연준_9205
+int count_if_nodetype(json_value ext) {
+    int count = 0;
+    
+    if (ext.type == JSON_OBJECT) {
+        char* nodetype = json_get_string(ext, "_nodetype");
+        if (nodetype != NULL && strcmp(nodetype, "If") == 0) {
+            count++;
+        }
+        
+        for(int i=0; i<json_len(ext); i++) {
+            json_value child = json_get(ext, i);
+            count += count_if_nodetype(child);
+        }
+        
+    } else if (ext.type == JSON_ARRAY) {
+        for(int i=0; i<json_len(ext); i++) {
+            json_value child = json_get_from_array((json_array *)ext.value, i);
+            count += count_if_nodetype(child);
+        }
+    }
+
+    return count;
+}
+
 
 // 박솔빈_1442
 int countFunctions(json_value ext) {
@@ -113,12 +137,26 @@ int main() {
 
     // 함수 이름 출력
     print_fun_name(ext);
-    countFunctions(ext);
 
+    //함수 개수 출력
+    countFunctions(ext);
+	
+    //If문 개수 출력
+    int result_count = 0;
+
+    for(int i=0; i<json_len(ext); i++) {
+       json_value child = json_get_from_array((json_array *)ext.value, i);
+       result_count += count_if_nodetype(child);
+    }
+
+    printf("The number of 'If': %d\n", result_count);
+    
     // 함수 리턴타입 출력
     print_fun_returnType(ext);
-    // print_fun_param_info(ext);
-    print_fun_returnType(ext);
+
+    //함수 파라미터 타입, 변수명 출력
+    print_fun_param_info(ext);
+    
     json_free(json);
 
     return 0;
