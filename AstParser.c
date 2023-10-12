@@ -75,7 +75,6 @@ int count_if_nodetype(json_value ext) {
     return count;
 }
 
-
 // 박솔빈_1442
 int countFunctions(json_value ext) {
     int functionCount = 0;
@@ -92,25 +91,33 @@ int countFunctions(json_value ext) {
 
     return functionCount;
 }
+
 // 박윤_4538
 void print_fun_param_info(json_value ext)
 {
-    json_value ext_in = json_get_from_array((json_array *)ext.value, 0);
+	for (int i = 0; i < json_len(ext); i++) {
+		json_value json1 = json_get_from_array((json_array *)ext.value, i);
 
-	for (int i = 0; i < json_len(ext_in); i++) {
-		json_value json1 = json_get(ext_in, i);
-
-		if (json1.type == JSON_OBJECT) { 
+		if (json1.type == JSON_OBJECT) {
 			char* nodetype = json_get_string(json1, "_nodetype");
-			if (strcmp(nodetype, "Decl") == 0) {
-				json_value params_json = json_get(json_get(json_get(json1, "type"), "args"), "params");
+			if (strcmp(nodetype, "FuncDef") == 0) {
+				json_value params_json = json_get(json_get(json_get(json_get(json1, "decl"), "type"), "args"), "params");
+                
 				for (int j = 0; j < json_len(params_json); j++) {
 					json_value param = json_get(params_json, j);
-					char *type = json_get_string(json_get(json_get(json_get(json_get(param, "type"), "type"), "names"), 0));
+                    json_value type_json = param;
+                    
+                    do {
+                        json_value type_json1 = json_get(type_json, "type");
+                        type_json = type_json1;
+                    }while (strcmp(json_get_string(type_json, "_nodetype"), "IdentifierType") != 0);
+					char *type = json_get_string(json_get(json_get(type_json, "names"), 0));
+                    
 					printf("name: %s, type: %s\n", json_get_string(param, "name"), type);
+                    free(type);
 				}
 			}
-			free(nodetype);
+            if (nodetype != NULL) free(nodetype);
 		}
 	}
 }
