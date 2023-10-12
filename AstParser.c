@@ -87,13 +87,18 @@ int count_if_nodetype(json_value ext) {
 
     return count;
 }
-void if_Count(json_value ext){
-    int result_count = 0;
-    for(int i=0; i<json_len(ext); i++) {
-       json_value child = json_get_from_array((json_array *)ext.value, i);
-       result_count += count_if_nodetype(child);
+int countIfInFunction(json_value ext) {
+    int functionCount = 0;
+
+    for(int i = 0; i < json_len(ext); i++) {
+        json_value obj = json_get_from_array((json_array *)ext.value, i);
+
+        if (strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0) {
+            // 함수 내의 If문 개수를 세는 변수
+            int ifCount = count_if_nodetype(obj);
+            printf("Function: %s, If Count: %d\n", json_get_string(json_get(json_get(obj, "decl")), "name"), ifCount);
+        }
     }
-    printf("The number of 'If': %d\n", result_count); 
 }
 
 
@@ -179,7 +184,7 @@ int main() {
     countFunctions(ext);
 	
     //If문 개수 출력
-    if_count(ext);
+    countIfInFunction(ext);
     
     // 함수 리턴타입 출력
     print_fun_returnType(ext);
