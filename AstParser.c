@@ -101,21 +101,29 @@ void print_fun_param_info(json_value ext)
 		if (json1.type == JSON_OBJECT) {
 			char* nodetype = json_get_string(json1, "_nodetype");
 			if (strcmp(nodetype, "FuncDef") == 0) {
-				json_value params_json = json_get(json_get(json_get(json_get(json1, "decl"), "type"), "args"), "params");
-                
-				for (int j = 0; j < json_len(params_json); j++) {
-					json_value param = json_get(params_json, j);
-                    json_value type_json = param;
+                if (json_get(json_get(json_get(json1, "decl"), "type"), "args").type == JSON_OBJECT) {
+                    json_value params_json = json_get(json_get(json_get(json_get(json1, "decl"), "type"), "args"), "params");
                     
-                    do {
-                        json_value type_json1 = json_get(type_json, "type");
-                        type_json = type_json1;
-                    }while (strcmp(json_get_string(type_json, "_nodetype"), "IdentifierType") != 0);
-					char *type = json_get_string(json_get(json_get(type_json, "names"), 0));
-                    
-					printf("name: %s, type: %s\n", json_get_string(param, "name"), type);
-                    free(type);
-				}
+                    for (int j = 0; j < json_len(params_json); j++) {
+                        json_value param = json_get(params_json, j);
+                        json_value type_json = param;
+                        
+                        do {
+                            json_value type_json1 = json_get(type_json, "type");
+                            type_json = type_json1;
+                        }while (!(strcmp(json_get_string(type_json, "_nodetype"), "IdentifierType") == 0 || strcmp(json_get_string(type_json, "_nodetype"), "Struct") == 0));
+                        json_value type;
+                        if (strcmp(json_get_string(type_json, "_nodetype"), "Struct") != 0) {
+                            type = json_get(type_json, "names");
+                        }else {
+                            type = json_get(type_json, "name");
+                        }
+                        
+                        printf("name: %s, type: ", json_get_string(param, "name"));
+                        json_print(type);
+                        printf("\n");
+                    }
+                }
 			}
             if (nodetype != NULL) free(nodetype);
 		}
