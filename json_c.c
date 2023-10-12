@@ -123,7 +123,7 @@ json_value json_get_value(json_value v, ...) {
 
 	json_value ret = json_get_from_json_value(v, key);
 	if(ret.type == JSON_UNDEFINED){
-		fprintf(stderr, "error tracing : ");
+		// fprintf(stderr, "error tracing : ");
 		json_stacktrace_print(stderr, &jss);
 		fprintf(stderr, "\n");
 		return ret;
@@ -142,7 +142,7 @@ json_value json_get_value(json_value v, ...) {
 		ret = json_get_from_json_value(ret, vakey);
 
 		if(ret.type == JSON_UNDEFINED){
-			fprintf(stderr, "error tracing : ");
+			// fprintf(stderr, "error tracing : ");
 			json_stacktrace_print(stderr, &jss);
 			fprintf(stderr, "\n");
 			return ret;
@@ -161,7 +161,7 @@ json_value json_get_from_object(json_object* json, const char* key) {
 	if((int)key >=0 && (int)key <= json->last_index)
 		return json->values[(int)key];
 	if((int)key <= MAX_INDEX && (int)key>= 0){
-		fprintf(stderr, "json_get_from_object error : out of index\n");
+		// fprintf(stderr, "json_get_from_object error : out of index\n");
 		return undefined_json;
 	}
 		
@@ -172,7 +172,7 @@ json_value json_get_from_object(json_object* json, const char* key) {
             return json->values[i];
         }
     }
-	fprintf(stderr, "json_get_from_object error : no value corresponding to the key(%s)\n", key);
+	// fprintf(stderr, "json_get_from_object error : no value corresponding to the key(%s)\n", key);
     return undefined_json;
 }
 json_value json_get_from_array(json_array* json, const int index) {
@@ -189,7 +189,7 @@ int json_get_last_index(json_value v){
 	if(v.type == JSON_OBJECT) return ((json_object *)(v.value))->last_index;
 	if(v.type == JSON_ARRAY) return ((json_array *)(v.value))->last_index;
 
-	fprintf(stderr, "json_get_last_index : the type of json_value is not a JSON_ARRAY nor a JSON_OBJECT");
+	// fprintf(stderr, "json_get_last_index : the type of json_value is not a JSON_ARRAY nor a JSON_OBJECT");
 	return -1;
 }
 
@@ -501,7 +501,7 @@ json_type json_get_type(json_value v){
 
 const char * const json_type_to_string(int type){
 	switch(type){
-		case JSON_UNDEFINED: return "undefined";
+		// case JSON_UNDEFINED: return "undefined";
 		case JSON_NUMBER: return "number";
 		case JSON_NUMBER|JSON_INTEGER: return "number(integer)";
 		case JSON_NUMBER|JSON_DOUBLE: return "number(double)";
@@ -515,23 +515,24 @@ const char * const json_type_to_string(int type){
 }
 
 void json_fprint_value(FILE * outfp, const json_value v, int tab) {
-    if (v.type == JSON_UNDEFINED) fprintf(outfp, "undefined");
+    if (v.type == JSON_UNDEFINED) 
+    // fprintf(outfp, "undefined");
     if (v.type == (JSON_NUMBER|JSON_INTEGER)) fprintf(outfp, "%lld", *((long long int *)(v.value)));
     if (v.type == (JSON_NUMBER|JSON_DOUBLE)) fprintf(outfp, "%f", *((double *)(v.value)));
     if (v.type == JSON_ARRAY) json_fprint_array(outfp, (json_array *)(v.value), tab);
-    if (v.type == JSON_STRING) fprintf(outfp, "\"%s\"", ((char *)(v.value)));
+    if (v.type == JSON_STRING) fprintf(outfp, "%s", ((char *)(v.value)));
     if (v.type == JSON_BOOLEAN) fprintf(outfp, *((bool *)(v.value))?"true":"false");
     if (v.type == JSON_OBJECT) {json_fprint_object(outfp, ((json_object*)(v.value)), tab); }
     if (v.type == JSON_NULL) fprintf(outfp, "null");
 }
 void json_fprint_array(FILE * outfp, const json_array* json, int tab) {
-    fprintf(outfp, "[");
+    fprintf(outfp, "");
     for (int i = 0; i <= json->last_index; i++) {
         json_fprint_value(outfp, json->values[i], tab);
         if(json->last_index != i)
             fprintf(outfp, ", ");
     }
-    fprintf(outfp, "]");
+    fprintf(outfp, "");
 }
 void json_fprint_object(FILE * outfp, const json_object* json, int tab) {
     fprintf(outfp, "{\n");
@@ -572,23 +573,23 @@ void json_stacktrace_push(json_small_stack * jss, int type, const void * key){
 void json_stacktrace_print(FILE * fp, const json_small_stack * const jss){
 	if(jss->top<0) return;
 
-	fprintf(fp, "(%s)", json_type_to_string(jss->type[0]));
+	// fprintf(fp, "(%s)", json_type_to_string(jss->type[0]));
 
 	for(int i=1; i<=jss->top; i++){
 		if(jss->type[i-1] == JSON_ARRAY) fprintf(fp, "(%s)[%d]", json_type_to_string(jss->type[i]), (int)jss->stacktrace[i-1]);
 		else if(jss->type[i-1] == JSON_OBJECT){ 
 			if((int)jss->stacktrace[i-1] <= MAX_INDEX && (int)jss->stacktrace[i-1] >= 0) fprintf(fp, "(%s)[%d]", json_type_to_string(jss->type[i]), (int)jss->stacktrace[i-1]);
-			else fprintf(fp, "->(%s)%s", json_type_to_string(jss->type[i]), jss->stacktrace[i-1]);
+			// else fprintf(fp, "->(%s)%s", json_type_to_string(jss->type[i]), jss->stacktrace[i-1]);
 		}
-		else fprintf(fp, "->(%s)", json_type_to_string(jss->type[i]));
+		// else fprintf(fp, "->(%s)", json_type_to_string(jss->type[i]));
 	}
 
 	if(jss->type[jss->top] == JSON_ARRAY) fprintf(fp, "(%s)[%d]", json_type_to_string(JSON_UNDEFINED), (int)jss->stacktrace[jss->top]);
 	else if(jss->type[jss->top] == JSON_OBJECT){ 
 		if((int)jss->stacktrace[jss->top] <= MAX_INDEX && (int)jss->stacktrace[jss->top] >= 0) fprintf(fp, "(%s)[%d]", json_type_to_string(JSON_UNDEFINED), (int)jss->stacktrace[jss->top]);
-		else fprintf(fp, "->(%s)%s", json_type_to_string(JSON_UNDEFINED), jss->stacktrace[jss->top]);
+		// else fprintf(fp, "->(%s)%s", json_type_to_string(JSON_UNDEFINED), jss->stacktrace[jss->top]);
 	}
-	else fprintf(fp, "->(%s)", json_type_to_string(JSON_UNDEFINED));
+	// else fprintf(fp, "->(%s)", json_type_to_string(JSON_UNDEFINED));
 	
 }
 
