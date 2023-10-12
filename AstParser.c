@@ -74,6 +74,15 @@ int count_if_nodetype(json_value ext) {
 
     return count;
 }
+void if_Count(json_value ext){
+    int result_count = 0;
+    for(int i=0; i<json_len(ext); i++) {
+       json_value child = json_get_from_array((json_array *)ext.value, i);
+       result_count += count_if_nodetype(child);
+    }
+    printf("The number of 'If': %d\n", result_count); 
+}
+
 
 // 박솔빈_1442
 int countFunctions(json_value ext) {
@@ -157,14 +166,7 @@ int main() {
     countFunctions(ext);
 	
     //If문 개수 출력
-    int result_count = 0;
-
-    for(int i=0; i<json_len(ext); i++) {
-       json_value child = json_get_from_array((json_array *)ext.value, i);
-       result_count += count_if_nodetype(child);
-    }
-
-    printf("The number of 'If': %d\n", result_count);
+    if_count(ext);
     
     // 함수 리턴타입 출력
     print_fun_returnType(ext);
