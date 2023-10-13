@@ -77,11 +77,80 @@ void print_fun_name(json_value ext)
 - 객체(obj)의 "_nodetype" 키의 값과 "FuncDef" 문자열을 비교하여 일치하는 JSON 객체를 찾습니다.
 
 `json_value decl = json_get(obj, "decl")`, `json_value name = json_get(decl, "name")`
-- "FuncDef"를 나타내는 JSON 객체(obj)가 발견되면 해당 객체에서 "decl" 키를 사용하여 JSON 객체가져 옵니다.
+- "FuncDef"를 나타내는 JSON 객체(obj)가 발견되면 해당 객체에서 "decl" 키를 사용하여 JSON 객체를 가져 옵니다.
 - 가져온 JSON 객체에서 "name" 키를 사용하여 함수의 이름을 가져옵니다.
 
-### 각자 함수명2
+### print_fun_returnType
+
+void print_fun_returnType(json_value ext)
+{
+    for(int i = 0; i < json_len(ext); i++)
+    {
+        json_value obj = json_get_from_array((json_array *)ext.value, i);
+        
+        if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)
+        {
+            json_value decl = json_get(obj, "decl");
+            json_value name = json_get(decl, "name");
+            printf("Function %s's Return Type is ", name.value);
+            json_value first_type = json_get(decl, "type");
+            json_value second_type = json_get(first_type, "type");
+            if(strcmp(json_get_string(second_type, "_nodetype"), "PtrDecl") == 0)
+            {
+                json_value ptr_type = json_get(second_type, "type");
+                json_value pfinal_type = json_get(ptr_type, "type");
+                json_value pname = json_get(pfinal_type, "name");
+                if(pname.value == 0)
+                {
+                    json_value pnames = json_get(pfinal_type, "names");
+                    json_print(pnames);
+                }
+                json_print(pname);
+                printf(" *");
+            }
+            json_value third_type = json_get(second_type, "type");
+            json_value test_type = json_get(third_type, "names");
+            json_print(test_type);
+            
+            if (json_len(test_type) == 0 && strcmp(json_get_string(third_type, "_nodetype"), "IdentifierType") == 0)
+            {
+                json_value final_type = json_get(third_type, "type");
+                json_value if_type = json_get(final_type, "names");
+                json_print(if_type);
+            }
+			}   
+        printf("\n");
+        }
+}
+`json_value obj = json_get_from_array((json_array *)ext.value, i)`
+-  json_array에서 i번째 요소(obj)를 가져옵니다.
+
+`if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)`
+- 객체(obj)의 "_nodetype" 키의 값과 "FuncDef" 문자열을 비교하여 일치하는 JSON 객체를 찾습니다.
+
+```
+json_value first_type = json_get(decl, "type");
+json_value second_type = json_get(first_type, "type");
+```
+- decl json 객체 에서 "type" key를 갖는 json object를 first_type으로 할당합니다.
+- 같은 과정을 한번 더 거쳐서 second_type으로 할당합니다.
+
+`if(strcmp(json_get_string(second_type, "_nodetype"), "PtrDecl") == 0)`
+- second_type 객체에서 _nodetype의 value가 "PtrDecl" 인 경우 조건문 내부에 진입한다
+- 해당 조건은 함수의 리턴타입이 pointer(*)를 반환하는 경우를 위한 조건입니다.
+
+`json_value pname = json_get(pfinal_type, "name");`
+- pfinal_type json 객체 에서 "name" key를 갖는 json object를 pname으로 할당합니다.
+
+`if(pname.value == 0)`
+- 해당 객체에서 name이 아닌 names 라는 key를 가질 경우를 위한 조건입니다.
+
+`if (json_len(test_type) == 0 && strcmp(json_get_string(third_type, "_nodetype"), "IdentifierType") == 0)`
+- 위의 조건문 모두에 해당하지 않는 경우에 대한 조건이고, 이때 _nodetype 키의 value가 IdentifierType인 경우를 위한 조건입니다.
+- 해당 경우까지 거치면 모든 경우에 대한 함수 리턴 값을 출력할 수 있습니다. 
 
 ### 컴파일 및 실행 결과
-컴파일러 버전
-```gcc -o ASTparser ASTparser.c
+- 컴파일러 버전
+Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+
+```gcc -o ASTparser ASTparser.c```
