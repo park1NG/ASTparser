@@ -6,6 +6,7 @@
 2. [AstParser](/AstParser)
 3. [generate_ast.py](/generate_ast.py)
 
+</br>
 
 ### main
 ```
@@ -59,6 +60,8 @@ int main() {
 `json_value ext = json_get(json, "ext")`
 -  JSON 데이터에서 "ext" 키에 해당하는 값을 찾고, 저장합니다.
 
+</br>
+
 ### void print_fun_name(json_value ext)
 ```
 void print_fun_name(json_value ext) 
@@ -86,6 +89,8 @@ void print_fun_name(json_value ext)
 `json_value decl = json_get(obj, "decl")`, `json_value name = json_get(decl, "name")`
 - "FuncDef"를 나타내는 JSON 객체(obj)가 발견되면 해당 객체에서 "decl" 키를 사용하여 JSON 객체를 가져 옵니다.
 - 가져온 JSON 객체에서 "name" 키를 사용하여 함수의 이름을 가져옵니다.
+
+</br>
 
 ### print_fun_returnType
 ```
@@ -155,7 +160,99 @@ json_value second_type = json_get(first_type, "type");
 
 `if (json_len(test_type) == 0 && strcmp(json_get_string(third_type, "_nodetype"), "IdentifierType") == 0)`
 - 위의 조건문 모두에 해당하지 않는 경우에 대한 조건이고, 이때 _nodetype 키의 value가 IdentifierType인 경우를 위한 조건입니다.
-- 해당 경우까지 거치면 모든 경우에 대한 함수 리턴 값을 출력할 수 있습니다. 
+- 해당 경우까지 거치면 모든 경우에 대한 함수 리턴 값을 출력할 수 있습니다.
+
+</br>
+
+### count_if_nodetype
+```
+int count_if_nodetype(json_value ext) {
+    int count = 0;
+    
+    if (ext.type == JSON_OBJECT) {
+        char* nodetype = json_get_string(ext, "_nodetype");
+        if (nodetype != NULL && strcmp(nodetype, "If") == 0) {
+            count++;
+        }
+        
+        for(int i=0; i<json_len(ext); i++) {
+            json_value child = json_get(ext, i);
+            count += count_if_nodetype(child);
+        }
+        
+    } else if (ext.type == JSON_ARRAY) {
+        for(int i=0; i<json_len(ext); i++) {
+            json_value child = json_get_from_array((json_array *)ext.value, i);
+            count += count_if_nodetype(child);
+        }
+    }
+    return count;
+}
+```
+`if (ext.type == JSON_OBJECT)`
+- ext가 JSON_OBJECT 유형인지 확인합니다.
+  
+` char* nodetype = json_get_string(ext, "_nodetype");`
+- ext에서 _nodetype 속성을 추출합니다.
+
+```
+if (nodetype != NULL && strcmp(nodetype, "If") == 0) {
+            count++;
+}
+```
+- 만약 "_nodetype" 속성이 존재하고 그 값이 "If"와 같다면, 카운트를 1 증가시킵니다.
+
+```
+for(int i = 0; i < json_len(ext); i++) {
+            json_value child = json_get(ext, i);
+            count += count_if_nodetype(child);
+}
+```
+- ext의 모든 하위 노드에 대해 재귀적으로 호출하여 카운트를 누적합니다.
+
+```
+else if (ext.type == JSON_ARRAY) {
+        for(int i=0; i<json_len(ext); i++) {
+            json_value child = json_get_from_array((json_array *)ext.value, i);
+            count += count_if_nodetype(child);
+        }
+}
+```
+- 만약 'ext'가 JSON_ARRAY 유형이라면, ext의 모든 하위 노드에 대해 재귀적으로 호출하여 카운트를 누적합니다.
+
+`return count;`
+- 최종 카운트를 값을 반환합니다.
+
+</br>
+
+### countIfInFunction
+```
+int countIfInFunction(json_value ext) {
+    int functionCount = 0;
+
+    for(int i = 0; i < json_len(ext); i++) {
+        json_value obj = json_get_from_array((json_array *)ext.value, i);
+
+        if (strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0) {
+            int ifCount = count_if_nodetype(obj);
+            printf("Function: %s, If Count: %d\n", json_get_string(json_get(json_get(obj, "decl")), "name"), ifCount);
+        }
+    }
+}
+```
+`json_value obj = json_get_from_array((json_array *)ext.value, i);`
+- json_array에서 i번째 요소(obj)를 가져옵니다.
+
+`if (strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)`
+- 객체(obj)의 "_nodetype" 키의 값과 "FuncDef" 문자열을 비교하여 일치하는 JSON 객체를 찾습니다.
+
+`int ifCount = count_if_nodetype(obj);`
+- "FuncDef"인 경우, count_if_nodetype 함수를 호출하여 "If" 노드의 개수를 얻습니다.
+
+`printf("Function: %s, If Count: %d\n", json_get_string(json_get(json_get(obj, "decl")), "name"), ifCount);`
+- 함수 이름과 해당 함수 내의 "If" 노드 개수를 출력합니다.
+
+</br>
 
 ### 컴파일 및 실행 결과
 - 컴파일러 버전  
