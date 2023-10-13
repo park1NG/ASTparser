@@ -152,7 +152,7 @@ void print_fun_param_info(json_value ext)
                     }
                 }
 			}
-            if (nodetype != NULL) free(nodetype);
+            // if (nodetype != NULL) free(nodetype);
 		}
 	}
 }
