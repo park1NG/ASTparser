@@ -87,7 +87,7 @@ int count_if_nodetype(json_value ext) {
 
     return count;
 }
-int countIfInFunction(json_value ext) {
+int print_count_if(json_value ext) {
     int functionCount = 0;
 
     for(int i = 0; i < json_len(ext); i++) {
@@ -103,7 +103,7 @@ int countIfInFunction(json_value ext) {
 
 
 // 박솔빈_1442
-int countFunctions(json_value ext) {
+int print_count_fun(json_value ext) {
     int functionCount = 0;
 
     for(int i = 0; i < json_len(ext); i++)
@@ -114,7 +114,7 @@ int countFunctions(json_value ext) {
             functionCount++;
         }
     }
-    printf("찾은 함수 개수: %d\n", functionCount);
+    printf("function counts: %d\n", functionCount);
 
     return functionCount;
 }
@@ -181,10 +181,10 @@ int main() {
     print_fun_name(ext);
 
     //함수 개수 출력
-    countFunctions(ext);
+    print_count_fun(ext);
 	
     //If문 개수 출력
-    countIfInFunction(ext);
+    print_count_if(ext);
     
     // 함수 리턴타입 출력
     print_fun_returnType(ext);
