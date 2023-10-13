@@ -225,9 +225,9 @@ else if (ext.type == JSON_ARRAY) {
 
 </br>
 
-### countIfInFunction
+### print_count_if
 ```
-int countIfInFunction(json_value ext) {
+int print_count_if(json_value ext) {
     int functionCount = 0;
 
     for(int i = 0; i < json_len(ext); i++) {
