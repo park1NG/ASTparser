@@ -81,7 +81,7 @@ void print_fun_name(json_value ext)
 - 가져온 JSON 객체에서 "name" 키를 사용하여 함수의 이름을 가져옵니다.
 
 ### print_fun_returnType
-
+```
 void print_fun_returnType(json_value ext)
 {
     for(int i = 0; i < json_len(ext); i++)
@@ -122,6 +122,7 @@ void print_fun_returnType(json_value ext)
         printf("\n");
         }
 }
+```
 `json_value obj = json_get_from_array((json_array *)ext.value, i)`
 -  json_array에서 i번째 요소(obj)를 가져옵니다.
 
