@@ -278,7 +278,6 @@ int print_count_fun(json_value ext) {
 `for(int i = 0; i < json_len(ext); i++)
     {
         json_value obj = json_get_from_array((json_array *)ext.value, i);
-
         if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)`
 -ext길이만큼 반복문을 실행하면서, strcmp함수를 통해서 함수인지 아닌지 비교하는 과정을 거칩니다.
 
