@@ -150,7 +150,67 @@ json_value second_type = json_get(first_type, "type");
 - 해당 경우까지 거치면 모든 경우에 대한 함수 리턴 값을 출력할 수 있습니다. 
 
 ### 컴파일 및 실행 결과
-- 컴파일러 버전
-Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+- 컴파일러 버전  
+`Apple clang version 14.0.3 (clang-1403.0.22.14.1)`  
+Windows용 gcc 컴파일러에서 컴파일 후 실행 시 일부 오류 메시지 출력되는 현상이 있습니다. 하지만 출력 결과는 동일합니다.
+- 컴파일
+  `gcc -o ASTparser ASTparser.c`
+실행파일은 레포지토리 내의 ASTparser와 동일합니다.
+- 실행결과  
+  `./ASTparser`
+```
+Func name is : newNode
+Func name is : isLeaf
+Func name is : leftRotate
+Func name is : rightRotate
+Func name is : checkNode
+Func name is : insertNode
+Func name is : checkForCase2
+Func name is : deleteNode
+Func name is : printInorder
+Func name is : checkBlack
+Func name is : main
+찾은 함수 개수: 11
+Function: newNode, If Count: 0
+Function: isLeaf, If Count: 1
+Function: leftRotate, If Count: 3
+Function: rightRotate, If Count: 3
+Function: checkNode, If Count: 21
+Function: insertNode, If Count: 5
+Function: checkForCase2, If Count: 32
+Function: deleteNode, If Count: 11
+Function: printInorder, If Count: 1
+Function: checkBlack, If Count: 2
+Function: main, If Count: 2
 
-```gcc -o ASTparser ASTparser.c```
+Function newNode's Return Type is Node *
+Function isLeaf's Return Type is int
+Function leftRotate's Return Type is Node *
+Function rightRotate's Return Type is Node *
+Function checkNode's Return Type is void
+Function insertNode's Return Type is void
+Function checkForCase2's Return Type is void
+Function deleteNode's Return Type is void
+Function printInorder's Return Type is void
+Function checkBlack's Return Type is void
+Function main's Return Type is int
+
+name: val, type: int
+name: par, type: Node
+name: n, type: Node
+name: node, type: Node
+name: node, type: Node
+name: node, type: Node
+name: val, type: int
+name: root, type: Node
+name: toDelete, type: Node
+name: delete, type: int
+name: fromDirection, type: int
+name: root, type: Node
+name: val, type: int
+name: root, type: Node
+name: root, type: Node
+name: temp, type: Node
+name: c, type: int
+```  
+위의 출력과는 레포지토리 내의 red_black_tree.c.json을 기준으로 작성되었습니다.
