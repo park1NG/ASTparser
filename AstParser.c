@@ -64,7 +64,7 @@ void print_fun_returnType(json_value ext)
 }
 
 
-//박연준_9205
+// 박연준_9205
 int count_if_nodetype(json_value ext) {
     int count = 0;
     
@@ -181,16 +181,16 @@ int main() {
     // 함수 이름 출력
     print_fun_name(ext);
 
-    //함수 개수 출력
+    // 함수 개수 출력
     print_count_fun(ext);
 	
-    //If문 개수 출력
+    // If문 개수 출력
     print_count_if(ext);
     
     // 함수 리턴타입 출력
     print_fun_returnType(ext);
 
-    //함수 파라미터 타입, 변수명 출력
+    // 함수 파라미터 타입, 변수명 출력
     print_fun_param_info(ext);
     
     json_free(json);
