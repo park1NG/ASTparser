@@ -397,62 +397,7 @@ gcc -o ASTparser ASTparser.c
 #### 실행결과  
 ```
 ./ASTparser
+
 ```
-```
-Func name is : newNode
-Func name is : isLeaf
-Func name is : leftRotate
-Func name is : rightRotate
-Func name is : checkNode
-Func name is : insertNode
-Func name is : checkForCase2
-Func name is : deleteNode
-Func name is : printInorder
-Func name is : checkBlack
-Func name is : main
-
-function counts: 11
-
-Function: newNode, If Count: 0
-Function: isLeaf, If Count: 1
-Function: leftRotate, If Count: 3
-Function: rightRotate, If Count: 3
-Function: checkNode, If Count: 21
-Function: insertNode, If Count: 5
-Function: checkForCase2, If Count: 32
-Function: deleteNode, If Count: 11
-Function: printInorder, If Count: 1
-Function: checkBlack, If Count: 2
-Function: main, If Count: 2
-
-Function newNode's Return Type is Node *
-Function isLeaf's Return Type is int
-Function leftRotate's Return Type is Node *
-Function rightRotate's Return Type is Node *
-Function checkNode's Return Type is void
-Function insertNode's Return Type is void
-Function checkForCase2's Return Type is void
-Function deleteNode's Return Type is void
-Function printInorder's Return Type is void
-Function checkBlack's Return Type is void
-Function main's Return Type is int
-
-name: val, type: int
-name: par, type: Node
-name: n, type: Node
-name: node, type: Node
-name: node, type: Node
-name: node, type: Node
-name: val, type: int
-name: root, type: Node
-name: toDelete, type: Node
-name: delete, type: int
-name: fromDirection, type: int
-name: root, type: Node
-name: val, type: int
-name: root, type: Node
-name: root, type: Node
-name: temp, type: Node
-name: c, type: int
-```  
+[Result.png](/Result.png)
 - 위의 출력과는 레포지토리 내의 red_black_tree.c.json을 기준으로 작성되었습니다.
