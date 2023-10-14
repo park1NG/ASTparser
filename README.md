@@ -303,6 +303,84 @@ if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0){
 </br>
 </br>
 
+### print_fun_returnType
+```
+void print_fun_param_info(json_value ext)
+{
+	for (int i = 0; i < json_len(ext); i++) {
+		json_value json1 = json_get_from_array((json_array *)ext.value, i);
+
+		if (json1.type == JSON_OBJECT) {
+			char* nodetype = json_get_string(json1, "_nodetype");
+			if (strcmp(nodetype, "FuncDef") == 0) {
+                if (json_get(json_get(json_get(json1, "decl"), "type"), "args").type == JSON_OBJECT) {
+                    json_value params_json = json_get(json_get(json_get(json_get(json1, "decl"), "type"), "args"), "params");
+                    
+                    for (int j = 0; j < json_len(params_json); j++) {
+                        json_value param = json_get(params_json, j);
+                        json_value type_json = param;
+                        
+                        do {
+                            json_value type_json1 = json_get(type_json, "type");
+                            type_json = type_json1;
+                        }while (!(strcmp(json_get_string(type_json, "_nodetype"), "IdentifierType") == 0 || strcmp(json_get_string(type_json, "_nodetype"), "Struct") == 0));
+                        json_value type;
+                        if (strcmp(json_get_string(type_json, "_nodetype"), "Struct") != 0) {
+                            type = json_get(type_json, "names");
+                        }else {
+                            type = json_get(type_json, "name");
+                        }
+                        
+                        printf("name: %s, type: ", json_get_string(param, "name"));
+                        json_print(type);
+                        printf("\n");
+                    }
+                }
+			}
+            // if (nodetype != NULL) free(nodetype);
+		}
+	}
+}
+```
+`json_value obj = json_get_from_array((json_array *)ext.value, i)`
+-  json_array에서 i번째 요소(obj)를 가져옵니다.
+
+```
+char* nodetype = json_get_string(json1, "_nodetype");
+if (strcmp(nodetype, "FuncDef") == 0) {
+```
+- 객체(obj)의 "_nodetype" 키의 값과 "FuncDef" 문자열을 비교하여 일치하는 JSON 객체를 찾습니다.
+
+`if (json_get(json_get(json_get(json1, "decl"), "type"), "args").type == JSON_OBJECT) {`
+- json {} > decl {} > type {} > args {} 로 파라미터가 없는지 검사합니다.
+
+```
+do {
+	json_value type_json1 = json_get(type_json, "type");
+	type_json = type_json1;
+}while (!(strcmp(json_get_string(type_json, "_nodetype"), "IdentifierType") == 0 || strcmp(json_get_string(type_json, "_nodetype"), "Struct") == 0));
+```
+- type_json json 객체의 _nodetype key 값의 value가 IdentifierType 가 될 때까지 "type" key를 갖는 json object를 type_json으로 할당합니다.
+
+```
+if (strcmp(json_get_string(type_json, "_nodetype"), "Struct") != 0) {
+    type = json_get(type_json, "names");
+}else {
+    type = json_get(type_json, "name");
+}
+```
+- type_json json 객체 에서 구조체라면 "name", 구조체가 아니라면 "names" key를 갖는 json object를 type으로 할당합니다.
+
+```
+printf("name: %s, type: ", json_get_string(param, "name"));
+json_print(type);
+printf("\n");
+```
+- param json 객체에서 변수의 이름을 얻고, 기존에 구해두었던 type을 출력합니다
+
+</br>
+</br>
+
 ### 컴파일 및 실행 결과
 #### 컴파일러 버전  
 ```
