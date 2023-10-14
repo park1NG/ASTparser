@@ -303,7 +303,7 @@ if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0){
 </br>
 </br>
 
-### print_fun_returnType
+### print_fun_param_info
 ```
 void print_fun_param_info(json_value ext)
 {
