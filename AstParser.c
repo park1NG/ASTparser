@@ -35,19 +35,23 @@ void print_fun_returnType(json_value ext)
             printf("Function %s's Return Type is ", name.value);
             json_value first_type = json_get(decl, "type");
             json_value second_type = json_get(first_type, "type");
+
             if(strcmp(json_get_string(second_type, "_nodetype"), "PtrDecl") == 0)
             {
                 json_value ptr_type = json_get(second_type, "type");
                 json_value pfinal_type = json_get(ptr_type, "type");
                 json_value pname = json_get(pfinal_type, "name");
+	
                 if(pname.value == 0)
                 {
                     json_value pnames = json_get(pfinal_type, "names");
                     json_print(pnames);
                 }
+
                 json_print(pname);
                 printf(" *");
             }
+
             json_value third_type = json_get(second_type, "type");
             json_value test_type = json_get(third_type, "names");
             json_print(test_type);
@@ -58,9 +62,9 @@ void print_fun_returnType(json_value ext)
                 json_value if_type = json_get(final_type, "names");
                 json_print(if_type);
             }
-			}   
-        printf("\n");
         }
+        printf("\n");
+    }
 }
 
 
@@ -88,6 +92,7 @@ int count_if_nodetype(json_value ext) {
 
     return count;
 }
+
 int print_count_if(json_value ext) {
     int functionCount = 0;
 
