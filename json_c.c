@@ -106,11 +106,11 @@ json_value json_get_value(json_value v, ...) {
 	key = va_arg(ap, void *);
 	if((int)key == JSON_LAST_ARG_MAGIC_NUMBER){ 
 		return v;
-		//fprintf(stderr, "json_get error : json_get needs two arguments at least and each of arguments must be a index(integer) or string(search key) except the first argument\n");
+		//fprintf(stderr, "json_get error : json_get needs two arguments at least and each of arguments must be a index(integer) or string(search key) except the first argument");
 		//return undefined_json;
 	}
 	if( ! (v.type == JSON_ARRAY || v.type == JSON_OBJECT)){
-		fprintf(stderr, "json_get error : the first argument of json_get should be an array or an object (type : %s)\n", json_type_to_string(v.type));
+		fprintf(stderr, "json_get error : the first argument of json_get should be an array or an object (type : %s)", json_type_to_string(v.type));
 		return undefined_json;
 	}
 	json_small_stack jss = json_stacktrace_get_stack();
@@ -125,7 +125,7 @@ json_value json_get_value(json_value v, ...) {
 	if(ret.type == JSON_UNDEFINED){
 		// fprintf(stderr, "error tracing : ");
 		json_stacktrace_print(stderr, &jss);
-		fprintf(stderr, "\n");
+		fprintf(stderr, "");
 		return ret;
 	}
 
@@ -144,7 +144,7 @@ json_value json_get_value(json_value v, ...) {
 		if(ret.type == JSON_UNDEFINED){
 			// fprintf(stderr, "error tracing : ");
 			json_stacktrace_print(stderr, &jss);
-			fprintf(stderr, "\n");
+			fprintf(stderr, "");
 			return ret;
 		}
 	}
@@ -153,7 +153,7 @@ json_value json_get_value(json_value v, ...) {
 json_value json_get_from_json_value(json_value v, const void* key) {
     if (v.type == JSON_OBJECT) return json_get_from_object((json_object *)(v.value), (char *)key);
     if (v.type == JSON_ARRAY) return json_get_from_array((json_array *)(v.value), (int)key);
-	fprintf(stderr, "json_get_from_json_value error : cannot get a json value with key from json_value that is not an object nor an array(value type : %s)\n", json_type_to_string(v.type));
+	fprintf(stderr, "json_get_from_json_value error : cannot get a json value with key from json_value that is not an object nor an array(value type : %s)", json_type_to_string(v.type));
     return undefined_json;
 }
 json_value json_get_from_object(json_object* json, const char* key) {
@@ -161,7 +161,7 @@ json_value json_get_from_object(json_object* json, const char* key) {
 	if((int)key >=0 && (int)key <= json->last_index)
 		return json->values[(int)key];
 	if((int)key <= MAX_INDEX && (int)key>= 0){
-		// fprintf(stderr, "json_get_from_object error : out of index\n");
+		// fprintf(stderr, "json_get_from_object error : out of index");
 		return undefined_json;
 	}
 		
@@ -172,12 +172,12 @@ json_value json_get_from_object(json_object* json, const char* key) {
             return json->values[i];
         }
     }
-	// fprintf(stderr, "json_get_from_object error : no value corresponding to the key(%s)\n", key);
+	// fprintf(stderr, "json_get_from_object error : no value corresponding to the key(%s)", key);
     return undefined_json;
 }
 json_value json_get_from_array(json_array* json, const int index) {
     if (json == NULL || index < 0 || json->last_index < index){
-		fprintf(stderr, "json_get_from_array error : out of index\n");
+		fprintf(stderr, "json_get_from_array error : out of index");
 		return undefined_json;
 	}
     return json->values[index];
@@ -212,7 +212,7 @@ json_value json_string_to_value(const char** json_message) {
             jsonv.value = json_create_object(json_message);
             return jsonv;
         case '}':
-            printf("parse error : unexpected token '}'\n");
+            printf("parse error : unexpected token '}'");
             return jsonv;
         //in : [something]
         //   : cp    //c==c, p= *json_message는 동일한 위치
@@ -224,7 +224,7 @@ json_value json_string_to_value(const char** json_message) {
             jsonv.value = json_create_array(json_message);
             return jsonv;
         case ']':
-            printf("parse error : unexpected token ']'\n");
+            printf("parse error : unexpected token ']'");
             return jsonv;
         //in : "test"
         //   : cp     //c ==c, p == *json_message 현재 위치
@@ -236,7 +236,7 @@ json_value json_string_to_value(const char** json_message) {
 			char* str = (char*)malloc(sizeof(char) * JSON_STRBUFSIZE);
 			int size = 0;
 			if (str == NULL) {
-				printf("string malloc error;\n");
+				printf("string malloc error;");
 				return jsonv;
 			}
 
@@ -268,11 +268,11 @@ json_value json_string_to_value(const char** json_message) {
 								char chs[4] = {0,};
 								for(int i=0; i<4; i++){
 									chs[i] = tolower(*((*json_message)++));
-									printf("chs[%d] : %c(ascii:%d)\n", i, chs[i], chs[i]);
+									printf("chs[%d] : %c(ascii:%d)", i, chs[i], chs[i]);
 									if(chs[i] >= 'a' && chs[i] <= 'f') chs[i] = chs[i] - 'a';
 									else if(chs[i] >= '0' && chs[i] <= '9') chs[i] = chs[i] - '0';
 									else{
-										fprintf(stderr, "json_string_to_value error: parse errer at escape string '\\u'\n");
+										fprintf(stderr, "json_string_to_value error: parse errer at escape string '\\u'");
 										break;
 									}
 								}
@@ -282,7 +282,7 @@ json_value json_string_to_value(const char** json_message) {
 							}
 							*/
 							default:
-								fprintf(stderr, "json_string_to_value error: parse errer at escape string '\\%c'\n", escape);
+								fprintf(stderr, "json_string_to_value error: parse errer at escape string '\\%c'", escape);
 						}
 						break;
 					}
@@ -295,9 +295,9 @@ json_value json_string_to_value(const char** json_message) {
 				size++;
 				if((size+1) % JSON_STRBUFSIZE == 0){
 					str = (char *)realloc(str, sizeof(char) * JSON_STRBUFSIZE * (1 + (size+1)/JSON_STRBUFSIZE));
-					printf("realloced : %s\n", str);
+					printf("realloced : %s", str);
 					if(str == NULL){
-						printf("string malloc error;\n");
+						printf("string malloc error;");
 						return jsonv;
 					}
 				}
@@ -308,7 +308,7 @@ JSON_STRBREAK:
         }
         default:
         {
-			//printf("c : %c\n", c);
+			//printf("c : %c", c);
             //in : null | false | true
             //   : cp  //c==c, p = *json_message 현재 위치
             //out: c   p
@@ -331,7 +331,7 @@ JSON_STRBREAK:
                     else *((bool *)jsonv.value) = true;
                     return jsonv;
                 }
-                printf("BOOLEAN or NULL error\n");
+                printf("BOOLEAN or NULL error");
                 return jsonv;
             }
             //in : number
@@ -352,20 +352,20 @@ JSON_STRBREAK:
 					jsonv.type = (json_type) (JSON_NUMBER|JSON_DOUBLE);
 					jsonv.value = malloc(sizeof(double));
 					if (jsonv.value == NULL) {
-						printf("malloc error!\n");
+						printf("malloc error!");
 						return jsonv;
 					}
 					*((double*)jsonv.value) = atof(temp);
-					//printf("temp : %s\n type:%x read : double %f\n", temp, jsonv.type,  *((double *)jsonv.value));
+					//printf("temp : %s type:%x read : double %f", temp, jsonv.type,  *((double *)jsonv.value));
 				} else{
 					jsonv.type = (json_type) (JSON_NUMBER|JSON_INTEGER);
 					jsonv.value = malloc(sizeof(long long int));
 					if (jsonv.value == NULL) {
-						printf("malloc error!\n");
+						printf("malloc error!");
 						return jsonv;
 					}
 					*((long long int*)jsonv.value) = atoll(temp);
-					//printf("temp : %s\n type:%x read : integer %lld\n", temp, jsonv.type,  *((long long int *)jsonv.value));
+					//printf("temp : %s type:%x read : integer %lld", temp, jsonv.type,  *((long long int *)jsonv.value));
 				}
                 return jsonv;
             }
@@ -422,7 +422,7 @@ json_object* json_create_object(const char** json_message) {
             if (stack == 0) stack++;
             else {
                 if (keyorvalue == JSON_KEY) {
-                    printf("key cannot be an Object\n");
+                    printf("key cannot be an Object");
                     return jsono;
                 }
                 (*json_message)--;
@@ -535,16 +535,16 @@ void json_fprint_array(FILE * outfp, const json_array* json, int tab) {
     fprintf(outfp, "");
 }
 void json_fprint_object(FILE * outfp, const json_object* json, int tab) {
-    fprintf(outfp, "{\n");
+    fprintf(outfp, "{");
     tab++;
     for (int i = 0; i <= json->last_index; i++) {
         for (int i = 0; i < tab; i++) fprintf(outfp, "\t");
         fprintf(outfp, "\"%s\": ", json->keys[i]);
         json_fprint_value(outfp, json->values[i], tab);
         if(json->last_index != i)
-            fprintf(outfp, ",\n");
+            fprintf(outfp, ",");
     }
-    fprintf(outfp, "\n");
+    fprintf(outfp, "");
     tab--;
     for (int i = 0; i < tab; i++) fprintf(outfp, "\t");
     fprintf(outfp, "}");
@@ -552,7 +552,7 @@ void json_fprint_object(FILE * outfp, const json_object* json, int tab) {
 /*
 void json_fprint(FILE * outfp, const json_value json) {
     json_fprint_value(outfp, json, 0);
-	fprintf(outfp, "\n");
+	fprintf(outfp, "");
 }
 */
 
@@ -568,7 +568,7 @@ void json_stacktrace_push(json_small_stack * jss, int type, const void * key){
 	jss->top++;
 	jss->type[jss->top] = type;
 	jss->stacktrace[jss->top] = key;
-	//printf("push : top:%d, type:%s, key:%d\n", jss->top, json_type_to_string(type), (int)key);
+	//printf("push : top:%d, type:%s, key:%d", jss->top, json_type_to_string(type), (int)key);
 }
 void json_stacktrace_print(FILE * fp, const json_small_stack * const jss){
 	if(jss->top<0) return;
