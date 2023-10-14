@@ -399,5 +399,5 @@ gcc -o ASTparser ASTparser.c
 ./ASTparser
 
 ```
-[Result.png](/Result.png)
+![Result.png](/Result.png)
 - 위의 출력과는 레포지토리 내의 red_black_tree.c.json을 기준으로 작성되었습니다.
