@@ -18,6 +18,7 @@ void print_fun_name(json_value ext)
             printf("Func name is : %s\n", name.value);
         }
     }
+    printf("\n");
 }
 
 // 박현재_3918
@@ -115,7 +116,7 @@ int print_count_fun(json_value ext) {
         }
     }
     printf("function counts: %d\n", functionCount);
-
+    printf("\n");
     return functionCount;
 }
 
