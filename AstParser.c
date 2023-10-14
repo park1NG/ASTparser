@@ -62,9 +62,10 @@ void print_fun_returnType(json_value ext)
                 json_value if_type = json_get(final_type, "names");
                 json_print(if_type);
             }
-        }
         printf("\n");
+        }
     }
+    printf("\n");
 }
 
 
@@ -105,6 +106,7 @@ int print_count_if(json_value ext) {
             printf("Function: %s, If Count: %d\n", json_get_string(json_get(json_get(obj, "decl")), "name"), ifCount);
         }
     }
+    printf("\n");
 }
 
 
