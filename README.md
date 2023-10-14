@@ -1,11 +1,12 @@
 # ASTparser
 
 ### Source File
-1. [red_black_tree.c](/file/red_black_tree.c)  
+1. [red_black_tree.c](/file/red_black_tree.c)
    [linked_list_operations.c](/file/linked_list_operations.c)
 2. [AstParser](/AstParser)
 3. [generate_ast.py](/generate_ast.py)
 
+</br>
 </br>
 
 ### main
@@ -61,6 +62,7 @@ int main() {
 -  JSON 데이터에서 "ext" 키에 해당하는 값을 찾고, 저장합니다.
 
 </br>
+</br>
 
 ### void print_fun_name(json_value ext)
 ```
@@ -90,6 +92,7 @@ void print_fun_name(json_value ext)
 - "FuncDef"를 나타내는 JSON 객체(obj)가 발견되면 해당 객체에서 "decl" 키를 사용하여 JSON 객체를 가져 옵니다.
 - 가져온 JSON 객체에서 "name" 키를 사용하여 함수의 이름을 가져옵니다.
 
+</br>
 </br>
 
 ### print_fun_returnType
@@ -162,6 +165,7 @@ json_value second_type = json_get(first_type, "type");
 - 위의 조건문 모두에 해당하지 않는 경우에 대한 조건이고, 이때 _nodetype 키의 value가 IdentifierType인 경우를 위한 조건입니다.
 - 해당 경우까지 거치면 모든 경우에 대한 함수 리턴 값을 출력할 수 있습니다.
 
+</br>
 </br>
 
 ### count_if_nodetype
@@ -253,7 +257,6 @@ int print_count_if(json_value ext) {
 - 함수 이름과 해당 함수 내의 "If" 노드 개수를 출력합니다.
 
 </br>
-
 </br>
 
 ### print_count_fun
@@ -275,31 +278,48 @@ int print_count_fun(json_value ext) {
 }
 ```
 
-`for(int i = 0; i < json_len(ext); i++)
-    {
+</br>
+
+```
+for(int i = 0; i < json_len(ext); i++)
+{
         json_value obj = json_get_from_array((json_array *)ext.value, i);
-        if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)`
+        if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0)
+	...
+}
+```
 - ext길이만큼 반복문을 실행하면서, strcmp함수를 통해서 함수인지 아닌지 비교하는 과정을 거칩니다.
 
-`if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0){
+```
+if(strcmp(json_get_string(obj, "_nodetype"), "FuncDef") == 0){
             functionCount++;
-};`
+};
+````
 - 만약 함수라면은, ++을 통해서, 함수인것을 카운팅합니다.
 
 `printf("function counts: %d\n", functionCount);`
 - 찾은 함수 개수를 출력합니다.
 
 </br>
+</br>
 
 ### 컴파일 및 실행 결과
-- 컴파일러 버전  
-`Apple clang version 14.0.3 (clang-1403.0.22.14.1)`  
-Windows용 gcc 컴파일러에서 컴파일 후 실행 시 일부 오류 메시지 출력되는 현상이 있습니다. 하지만 출력 결과는 동일합니다.
-- 컴파일
-  `gcc -o ASTparser ASTparser.c`
-실행파일은 레포지토리 내의 ASTparser와 동일합니다.
-- 실행결과  
-  `./ASTparser`
+#### 컴파일러 버전  
+```
+Apple clang version 14.0.3 (clang-1403.0.22.14.1)
+```  
+- Windows용 gcc 컴파일러에서 컴파일 후 실행 시 일부 오류 메시지 출력되는 현상이 있습니다. 하지만 출력 결과는 동일합니다.
+  
+#### 컴파일
+```
+gcc -o ASTparser ASTparser.c
+```
+- 실행파일은 레포지토리 내의 ASTparser와 동일합니다.
+
+#### 실행결과  
+```
+./ASTparser
+```
 ```
 Func name is : newNode
 Func name is : isLeaf
@@ -312,7 +332,9 @@ Func name is : deleteNode
 Func name is : printInorder
 Func name is : checkBlack
 Func name is : main
-찾은 함수 개수: 11
+
+function counts: 11
+
 Function: newNode, If Count: 0
 Function: isLeaf, If Count: 1
 Function: leftRotate, If Count: 3
@@ -355,4 +377,4 @@ name: root, type: Node
 name: temp, type: Node
 name: c, type: int
 ```  
-위의 출력과는 레포지토리 내의 red_black_tree.c.json을 기준으로 작성되었습니다.
+- 위의 출력과는 레포지토리 내의 red_black_tree.c.json을 기준으로 작성되었습니다.
